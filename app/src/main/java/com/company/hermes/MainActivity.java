@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
-        Intent i = new Intent(this, MyService.class);
-        startService(i);
+//        Intent i = new Intent(this, MyService.class);
+//        startService(i);
         final ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
         Objects.requireNonNull(clipboard).addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             public void onPrimaryClipChanged() {
