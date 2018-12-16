@@ -46,11 +46,13 @@ public class MyService extends Service {
         });
 
         //getting the clipboard text
-        String a = clipboard.getText().toString();
+        ClipData clipData = clipboard.getPrimaryClip();
+        ClipData.Item item = Objects.requireNonNull(clipData).getItemAt(0);
+        String text = item.getText().toString();
         //changing the clipboard text
         ClipData clip = ClipData.newPlainText("text", "hello");
         //clipboard.setPrimaryClip(clip);
-        Toast.makeText(getBaseContext(),"Copy:\n"+a,Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(),"Copy:\n"+text,Toast.LENGTH_LONG).show();
 
         //Action listeners for notification buttons
         if(intent != null)
