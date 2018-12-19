@@ -33,22 +33,23 @@ public class MyService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
+    String text;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+
         final ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
         Objects.requireNonNull(clipboard).addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             public void onPrimaryClipChanged() {
-                String a = clipboard.getText().toString();
+                ClipData clipData = clipboard.getPrimaryClip();
+                ClipData.Item item = Objects.requireNonNull(clipData).getItemAt(0);
+                text = item.getText().toString();
                 //Toast.makeText(getBaseContext(),"Copy:\n"+a,Toast.LENGTH_LONG).show();
             }
         });
 
         //getting the clipboard text
-        ClipData clipData = clipboard.getPrimaryClip();
-        ClipData.Item item = Objects.requireNonNull(clipData).getItemAt(0);
-        String text = item.getText().toString();
+
         //changing the clipboard text
         ClipData clip = ClipData.newPlainText("text", "hello");
         //clipboard.setPrimaryClip(clip);
