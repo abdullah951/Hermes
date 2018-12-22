@@ -27,6 +27,8 @@ public class MyService extends Service {
     public static final String ACTION_DECRYPT = "ACTION_DECRYPT";
     public static final String ACTION_ENCRYPT = "ACTION_ENCRYPT";
 
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+
     public MyService() {
     }
 
@@ -40,9 +42,11 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
+        //Clipboard change listener
         final ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
         Objects.requireNonNull(clipboard).addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             public void onPrimaryClipChanged() {
+                //getting the clipboard text
                 ClipData clipData = clipboard.getPrimaryClip();
                 ClipData.Item item = Objects.requireNonNull(clipData).getItemAt(0);
                 text = item.getText().toString();
@@ -50,7 +54,7 @@ public class MyService extends Service {
             }
         });
 
-        //getting the clipboard text
+
 
         //changing the clipboard text
         ClipData clip = ClipData.newPlainText("text", "hello");
@@ -64,17 +68,21 @@ public class MyService extends Service {
 
             switch (Objects.requireNonNull(action))
             {
+                //TurnServiceOn Click event
                 case ACTION_START_FOREGROUND_SERVICE:
                     startForegroundService();
                     Toast.makeText(getApplicationContext(), "Foreground service is started.", Toast.LENGTH_LONG).show();
                     break;
+                //TurnServiceOff Click event
                 case ACTION_STOP_FOREGROUND_SERVICE:
                     stopForegroundService();
                     Toast.makeText(getApplicationContext(), "Foreground service is stopped.", Toast.LENGTH_LONG).show();
                     break;
+                //Encrypt Click event
                 case ACTION_ENCRYPT:
                     Toast.makeText(getApplicationContext(), "You click Encrypt button.", Toast.LENGTH_LONG).show();
                     break;
+                //Decrypt Click event
                 case ACTION_DECRYPT:
                     Toast.makeText(getApplicationContext(), "You click Decrypt button.", Toast.LENGTH_LONG).show();
                     break;
@@ -111,14 +119,14 @@ public class MyService extends Service {
         // Make head-up notification.
         //builder.setFullScreenIntent(pendingIntent, true);
 
-        // Add Play button intent in notification.
+        // Add Encrypt button intent in notification.
         Intent encryptIntent = new Intent(this, MyService.class);
         encryptIntent.setAction(ACTION_ENCRYPT);
         PendingIntent pendingPlayIntent = PendingIntent.getService(this, 0, encryptIntent, 0);
         NotificationCompat.Action playAction = new NotificationCompat.Action(R.drawable.ic_lock, "Encrypt", pendingPlayIntent);
         builder.addAction(playAction);
 
-        // Add Pause button intent in notification.
+        // Add Decrypt button intent in notification.
         Intent decryptIntent = new Intent(this, MyService.class);
         decryptIntent.setAction(ACTION_DECRYPT);
         PendingIntent pendingPrevIntent = PendingIntent.getService(this, 0, decryptIntent, 0);
@@ -132,6 +140,7 @@ public class MyService extends Service {
 
         // Build the notification.
         Notification notification = builder.build();
+        //For Version greater than equal to Oreo Notification Channel is required
         if(Build.VERSION.SDK_INT>=26) {
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("NOTIFICATION_CHANNEL_DESC");
@@ -142,7 +151,7 @@ public class MyService extends Service {
         startForeground(1, notification);
 
     }
-    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+
     private void stopForegroundService()
     {
         Log.d(TAG_FOREGROUND_SERVICE, "Stop foreground service.");

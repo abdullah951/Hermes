@@ -24,7 +24,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private int[] tabIcons = {
@@ -38,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setElevation(0);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 //        Intent i = new Intent(this, MyService.class);
@@ -58,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //inflate the menu so that it appears in main layout
         MenuInflater inflater = getMenuInflater();
-
         inflater.inflate(R.menu.main_menu, menu);
         return true;
 
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Menu Click listener
         switch (item.getItemId()) {
 
             case R.id.turnServiceOn:
