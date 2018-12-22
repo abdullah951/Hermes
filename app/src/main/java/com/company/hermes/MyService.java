@@ -109,19 +109,19 @@ public class MyService extends Service {
         // Make the notification max priority.
         builder.setPriority(Notification.PRIORITY_MAX);
         // Make head-up notification.
-        builder.setFullScreenIntent(pendingIntent, true);
+        //builder.setFullScreenIntent(pendingIntent, true);
 
         // Add Play button intent in notification.
-        Intent playIntent = new Intent(this, MyService.class);
-        playIntent.setAction(ACTION_ENCRYPT);
-        PendingIntent pendingPlayIntent = PendingIntent.getService(this, 0, playIntent, 0);
+        Intent encryptIntent = new Intent(this, MyService.class);
+        encryptIntent.setAction(ACTION_ENCRYPT);
+        PendingIntent pendingPlayIntent = PendingIntent.getService(this, 0, encryptIntent, 0);
         NotificationCompat.Action playAction = new NotificationCompat.Action(R.drawable.ic_lock, "Encrypt", pendingPlayIntent);
         builder.addAction(playAction);
 
         // Add Pause button intent in notification.
-        Intent pauseIntent = new Intent(this, MyService.class);
-        pauseIntent.setAction(ACTION_DECRYPT);
-        PendingIntent pendingPrevIntent = PendingIntent.getService(this, 0, pauseIntent, 0);
+        Intent decryptIntent = new Intent(this, MyService.class);
+        decryptIntent.setAction(ACTION_DECRYPT);
+        PendingIntent pendingPrevIntent = PendingIntent.getService(this, 0, decryptIntent, 0);
         NotificationCompat.Action prevAction = new NotificationCompat.Action(R.drawable.ic_unlock, "Decrypt", pendingPrevIntent);
         builder.addAction(prevAction);
 
